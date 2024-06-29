@@ -1,64 +1,64 @@
 <script>
 import axios from "axios";
 import ProjectCard from "./ProjectsCard.vue";
+import { Bootstrap5Pagination } from 'laravel-vue-pagination';
+
+
 
 export default {
-    components: {
-        ProjectCard,
+  components: {
+    ProjectCard,
+    Bootstrap5Pagination,
+
+    
+   
+  },
+
+  data() {
+    return {
+      projects: [],
+      pagination: {
+        current_page: 1,
+        last_page: 1,
+        per_page: 8,
+        total: 0,
+      },
+    };
+  },
+
+  created() {
+    this.fetchProjects();
+  },
+
+  methods: {
+    fetchProjects(page = 1) {
+      axios
+        .get(`http://127.0.0.1:8000/api/projects?page=${page}`)
+        .then((resp) => {
+          console.log("API Response:", resp);
+
+          this.projects = resp.data.results.data; 
+          console.log("Projects:", this.projects);
+
+          this.pagination = {
+            current_page: resp.data.results.current_page,
+            last_page: resp.data.results.last_page,
+            per_page: resp.data.results.per_page,
+            total: resp.data.results.total,
+          };
+          console.log("Pagination Data:", this.pagination);
+        })
+        .catch((error) => {
+          console.error("Errore durante il recupero dei progetti:", error);
+        });
     },
-
-    data() {
-        return {
-            projects: [],
-            pagination: {
-                currentPage: 1,
-                lastPage: 1,
-                perPage: 10,
-                total: 0
-            },
-        };
+    
+    changePage(page) {
+      if (page >= 1 && page <= this.pagination.last_page) {
+        this.fetchProjects(page);
+      }
     },
-
-    created() {
-        this.fetchProjects();
-    },
-
-    methods: {
-        fetchProjects(page = 1) {
-            axios.get(`http://127.0.0.1:8000/api/projects?page=${page}`)
-                .then((resp) => {
-                  console.log(resp);
-                    this.projects = resp.data.results.data; // 'data' contiene i progetti
-                    console.log(this.projects);
-                    
-
-                    this.pagination = {
-                        currentPage: resp.data.results.current_page,
-                        lastPage: resp.data.results.last_page,
-                        perPage: resp.data.results.per_page,
-                        total: resp.data.results.total,
-                        
-                    };
-                    console.log(resp.data.results.current_page);
-                    console.log( this.pagination);
-                })
-                .catch((error) => {
-                    console.error("Errore durante il recupero dei progetti:", error);
-                });
-        },
-        getPageNumbers() {
-            const pages = [];
-            for (let i = 1; i <= this.pagination.lastPage; i++) {
-                pages.push(i);
-            }
-            return pages;
-        },
-        changePage(page) {
-            this.currentPage = page;
-            this.fetchProjects(page);
-        }
-
-    },
+  },
 };
 </script>
 
@@ -70,18 +70,23 @@ export default {
         <ProjectCard :project="project" />
       </div>
     </div>
-    <div class="mt-3 mb-5">
-      <button
-        v-for="page in getPageNumbers()"
-        :key="page"
-        @click="changePage(page)"
-        :class="['btn', page === pagination.currentPage ? 'btn-secondary' : 'btn-primary']">
-        {{ page }}
-      </button>
-     
+   
+      <div class="mt-3 mb-5">
+        <Bootstrap5Pagination 
+        :data="pagination" 
+        @pagination-change-page="changePage" 
+        :show-disabled="true"
+        :limit="2"
+        
+      />
+
+
     </div>
+  
   </div>
 </template>
 
+<style scoped lang="scss">
 
-<style scoped lang="scss"></style>
+</style>
+
