@@ -1,6 +1,6 @@
 <script>
 import axios from "axios";
-import ProjectCard from "./ProjectsCard.vue";
+import ProjectCard from '../components/ProjectCard.vue';
 import { Bootstrap5Pagination } from 'laravel-vue-pagination';
 
 
