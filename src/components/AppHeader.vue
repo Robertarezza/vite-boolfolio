@@ -10,7 +10,12 @@ export default {
             {
                 routerName: 'projects',
                 title: 'Progetti'
-            }
+            },
+            {
+                routerName: 'contacts',
+                title: 'Contattaci'
+            },
+           
         ]
         }
        

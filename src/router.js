@@ -3,7 +3,7 @@ import HomePage from "./pages/HomePage.vue";
 import ProjectPage from "./pages/ProjectPage.vue";
 import ShowProject from "./pages/ShowProject.vue";
 import NotFoundPage from "./pages/NotFoundPage.vue";
-
+import ContactsPage from "./pages/ContactsPage.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -19,15 +19,21 @@ const router = createRouter({
       component: ProjectPage,
     },
     {
-        path: "/projects/:slug",
-        name: "showProject",
-        component: ShowProject
+      path: "/projects/:slug",
+      name: "showProject",
+      component: ShowProject,
     },
+    {
+      path: "/contacts",
+      nome: "contacts",
+      component: ContactsPage,
+    },
+    //questa deve essere sempre l'ultima in modo che controlli tutte le rotte prima del notFounf
     {
       path: "/:pathMatch(.*)*",
       name: "not-found",
-      component: NotFoundPage
-  }
+      component: NotFoundPage,
+    },
   ],
 });
 
