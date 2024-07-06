@@ -25,7 +25,7 @@ const router = createRouter({
     },
     {
       path: "/contacts",
-      nome: "contacts",
+      name: "contacts",
       component: ContactsPage,
     },
     //questa deve essere sempre l'ultima in modo che controlli tutte le rotte prima del notFounf

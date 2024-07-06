@@ -35,7 +35,7 @@ export default {
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item" v-for="item in navItems">
-          <router-link :to="{name: item.routerName}" class="nav-link active" aria-current="page" href="#">{{item.title}}</router-link>
+          <router-link :to="{name: item.routerName}" class="nav-link" aria-current="page" href="#">{{item.title}}</router-link>
         </li>
         
         </ul>
