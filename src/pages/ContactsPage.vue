@@ -16,11 +16,15 @@ export default {
       success: false,
       isLoading: false,
       errors: {},
+      //aggiunta per validare solo dopo il click sul bottone
+      submitted: false
     };
   },
   methods: {
     sendForm() {
       this.isLoading = true;
+       //aggiunta per validare solo dopo il click sul bottone
+      this.submitted = true;
       axios
         .post(`${store.apiBaseURL}/api/leads`, this.form)
         .then((resp) => {
@@ -29,8 +33,11 @@ export default {
             this.clearFields();
           }
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+             if (err.response.status === 422) {
+                 this.errors= err.response.data.errors
+             }
+          console.log(err);
         })
         .finally(() => {
           this.isLoading = false;
@@ -60,7 +67,10 @@ export default {
         <form>
           <div class="mb-3">
             <label for="name" class="form-label">Nome</label>
-            <input type="text" class="form-control" id="name" v-model="form.name" />
+            <input type="text" class="form-control" :class="{'is-invalid': submitted && errors.name, 'is-valid': submitted && !errors.name}"  id="name" v-model="form.name" />
+
+            <div class="invalid-feedback" v-if="errors.name">{{ errors.name[0] }}</div>
+            <div class="valid-feedback" v-else> Looks good! </div>
           </div>
 
           <div class="mb-3">
@@ -70,7 +80,10 @@ export default {
               class="form-control"
               id="lastname"
               v-model="form.lastname"
+             :class="{'is-invalid': submitted && errors.lastname, 'is-valid': submitted && !errors.lastname}"
             />
+            <div class="invalid-feedback" v-if="errors.lastname">{{ errors.lastname[0] }}</div>
+            <div class="valid-feedback" v-else> Looks good! </div>
           </div>
 
           <div class="mb-3">
@@ -81,7 +94,11 @@ export default {
               id="email"
               v-model="form.email"
               aria-describedby="emailHelp"
+             :class="{'is-invalid': submitted && errors.email, 'is-valid': submitted && !errors.email}"
             />
+
+            <div class="invalid-feedback" v-if="errors.email">{{ errors.email[0] }}</div>
+            <div class="valid-feedback" v-else> Looks good! </div>
           </div>
 
           <div class="mb-3">
@@ -101,7 +118,10 @@ export default {
               id="message"
               rows="3"
               v-model="form.message"
+              :class="{'is-invalid': submitted && errors.message, 'is-valid': submitted && !errors.message}"
             ></textarea>
+            <div class="invalid-feedback" v-if="errors.message">{{ errors.message[0] }}</div>
+            <div class="valid-feedback" v-else> Looks good! </div>
           </div>
 
           <button
