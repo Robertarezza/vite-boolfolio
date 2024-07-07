@@ -20,6 +20,11 @@ export default {
         }
        
     }
+      // Pulisci il messaggio dopo 5 secondi
+      // setTimeout(() => {
+      //   this.success = false;
+      // }, 5000);this.$router.push({
+             
     
 }
 </script>

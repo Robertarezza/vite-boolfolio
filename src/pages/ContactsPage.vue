@@ -31,6 +31,13 @@ export default {
           if (resp.data.success) {
             this.success = true;
             this.clearFields();
+             // Pulisci il messaggio dopo 5 secondi e poi reindirizza
+             setTimeout(() => {
+              this.success = false;
+              this.$router.push({
+                name: "projects"
+              });
+            }, 3000);
           }
         })
         .catch((err) => {
@@ -40,7 +47,8 @@ export default {
           console.log(err);
         })
         .finally(() => {
-          this.isLoading = false;
+            this.isLoading = false;
+         
         });
     },
     clearFields() {
